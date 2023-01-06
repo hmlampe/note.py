@@ -333,6 +333,7 @@ class NoteCollection:
         note = Note(self, self.__persistence, name)
         self.notes[name] = note
         self.on_changed.fire()
+        self.select(name)
 
     def note_changed(self):
         """Is called by notes only to inform about changes."""
