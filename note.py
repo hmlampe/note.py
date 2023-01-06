@@ -586,6 +586,7 @@ class NoteFrame(ttk.Frame):
 class App:
     """Main class that runs the app."""
     def __init__(self, model=AppModel()):
+        self.model = model
         self.root = tk.Tk(className=model.get_name())
         self.icons = Icons(self.root, model.get_font_size())
         self.root.title(model.get_name())
@@ -608,7 +609,7 @@ class App:
         self.split_pane.add(self.noteframe)
 
         self.root.bind("<Control-q>", lambda e: self.root.quit())
-        self.root.bind("<Control-n>", lambda e: model.notes.add_new())
+        self.root.bind("<Control-n>", self.add_note)
         self.root.bind("<Control-s>", lambda e: self.noteframe.save())
         self.root.bind("<Control-p>", lambda e: self.noteframe.screenshot())
         self.root.bind("<Control-e>", self.noteframe.change_tab)
@@ -627,6 +628,10 @@ class App:
         """Runs the app."""
         self.root.protocol("WM_DELETE_WINDOW", self.onclose)
         self.root.mainloop()
+
+    def add_note(self, _):
+        self.model.notes.add_new()
+        self.noteframe.notebook.select(1)
 
 ICONFONT = (
     "AAEAAAANAIAAAwBQRkZUTZ2PjREAAAt4AAAAHE9TLzJEjmFkAAABWAAAAGBj"
